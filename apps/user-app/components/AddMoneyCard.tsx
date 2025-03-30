@@ -27,7 +27,7 @@ export const AddMoney = () => {
         <div className="py-4 text-left">
             Bank
         </div>
-        <Select onSelect={(value) => {
+        <Select onSelect={(value:any) => {
             setRedirectUrl(SUPPORTED_BANKS.find(x => x.name === value)?.redirectUrl || "")
             setProvider(SUPPORTED_BANKS.find(x => x.name === value)?.name || "")
         }} options={SUPPORTED_BANKS.map(x => ({

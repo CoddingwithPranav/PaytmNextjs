@@ -25,15 +25,15 @@ import {
   User,
   X,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { SimpleThemeToggle } from "@/components/theme-toggle"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
+import { Button } from "@repo/ui/components/ui/button"
+import { Input } from "@repo/ui/components/ui/input"
+import { Label } from "@repo/ui/components/ui/label"
+import { Switch } from "@repo/ui/components/ui/switch"
+import { Tabs, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
+import { SimpleThemeToggle } from "../../components/theme-toggle"
+import { Textarea } from "@repo/ui/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
+import { Separator } from "@repo/ui/components/ui/separator"
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("account")

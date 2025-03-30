@@ -1,5 +1,5 @@
 import { Skeleton } from "@repo/ui/components/ui/skeleton"
-import { cn } from "./lib/utils"
+import { cn } from "@repo/ui/utils"
 import { formatDistanceToNow } from "date-fns"
 import { ArrowDownLeft, ArrowUpRight, CreditCard, Landmark, ShoppingBag, Smartphone } from "lucide-react"
 

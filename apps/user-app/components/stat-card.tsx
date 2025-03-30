@@ -1,6 +1,6 @@
 import type React from "react"
-import { cn } from "./lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@repo/ui/utils"
 
 const statCardVariants = cva("rounded-lg border p-4 transition-all hover:shadow-md", {
   variants: {

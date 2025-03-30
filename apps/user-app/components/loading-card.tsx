@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@repo/ui/components/ui/card"
 import { Loader } from "@repo/ui/components/ui/loader"
 import { Skeleton } from "@repo/ui/components/ui/skeleton"
-import { cn } from "./lib/utils"
+import { cn } from "@repo/ui/utils"
 
 interface LoadingCardProps {
   className?: string

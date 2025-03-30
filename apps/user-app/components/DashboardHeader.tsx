@@ -20,7 +20,7 @@ interface HeaderProps {
   title: string
 }
 
-export function Header({ title }: HeaderProps) {
+export default function Header({ title }: HeaderProps) {
   const [searchOpen, setSearchOpen] = useState(false)
 
   return (
