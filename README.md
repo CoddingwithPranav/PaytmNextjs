@@ -13,6 +13,7 @@ npx create-turbo@latest
 ## What's inside?
 
 This Turborepo includes the following packages/apps:
+ docker run -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
 
 ### Apps and Packages
 
@@ -83,3 +84,10 @@ Learn more about the power of Turborepo:
 - [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
 - [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
 # PaytmNextjs
+
+
+
+- copy all .env.example to .env
+go to packages/db
+ -npx prisma migrate
+ -npx prisma db seed
