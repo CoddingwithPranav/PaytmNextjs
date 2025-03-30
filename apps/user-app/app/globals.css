@@ -1,2 +1,290 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 @source "../../../node_modules/@repo/ui";
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 240 10% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 20%;
+    --primary: 267 75% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 270 100% 92%;
+    --secondary-foreground: 270 70% 40%;
+    --accent: 142 70% 90%;
+    --accent-foreground: 142 70% 25%;
+    --highlight: 108 100% 47%;
+    --highlight-foreground: 0 0% 98%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 267 75% 50%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 240 10% 8%;
+    --foreground: 0 0% 90%;
+    --card: 240 10% 10%;
+    --card-foreground: 0 0% 90%;
+    --popover: 240 10% 10%;
+    --popover-foreground: 0 0% 90%;
+    --primary: 267 75% 60%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 270 70% 30%;
+    --secondary-foreground: 0 0% 90%;
+    --accent: 142 70% 20%;
+    --accent-foreground: 0 0% 90%;
+    --highlight: 108 100% 47%;
+    --highlight-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 267 75% 60%;
+  }
+}
+
+/* Theme transition */
+* {
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease, transform 0.3s ease;
+}
+
+/* Smooth hover transitions */
+a,
+button,
+.hover-scale {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gradient-bg {
+  background: linear-gradient(to right, hsl(0, 0%, 98%), hsl(0, 0%, 96%));
+}
+
+.dark .gradient-bg {
+  background: linear-gradient(to bottom, hsl(240, 10%, 8%), hsl(240, 10%, 10%));
+}
+
+.gradient-text {
+  background: linear-gradient(to right, hsl(267, 75%, 40%), hsl(267, 75%, 60%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.highlight-gradient-text {
+  background: linear-gradient(to right, hsl(267, 75%, 40%), hsl(108, 100%, 47%));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-border {
+  position: relative;
+}
+
+.gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(to right, hsl(267, 75%, 40%), hsl(267, 75%, 60%));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.highlight-gradient-border {
+  position: relative;
+}
+
+.highlight-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(to right, hsl(267, 75%, 40%), hsl(108, 100%, 47%));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.bg-grid-white\/5 {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(255 255 255 / 0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
+}
+
+/* Add basic styles for body and elements */
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Navbar styles */
+.navbar-bg {
+  background-color: hsl(var(--background));
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.dark .navbar-bg {
+  background-color: hsl(var(--card));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.navbar-transparent {
+  background-color: transparent;
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid transparent;
+}
+
+/* Theme transition animation */
+.theme-transition {
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+}
+
+/* Reduced contrast text */
+.reduced-contrast {
+  opacity: 0.85;
+}
+
+/* Smooth hover scale */
+.hover-scale {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Smooth hover lift */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Green accent elements */
+.green-accent {
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+}
+
+/* Highlight elements (bright green) */
+.highlight-accent {
+  background-color: hsl(var(--highlight));
+  color: hsl(var(--highlight-foreground));
+}
+
+/* Profile page specific styles */
+.profile-section {
+  transition: all 0.3s ease;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+}
+
+.profile-section:hover {
+  border-color: hsl(var(--primary));
+}
+
+.profile-nav-item {
+  transition: all 0.3s ease;
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.profile-nav-item:hover {
+  background-color: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+.profile-nav-item.active {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+
+/* Progress bar */
+.progress-bar {
+  height: 0.5rem;
+  border-radius: 9999px;
+  overflow: hidden;
+  background-color: hsl(var(--muted));
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--highlight)));
+}
+
+/* Badge styles */
+.badge-highlight {
+  background-color: hsl(var(--highlight) / 0.2);
+  color: hsl(var(--highlight));
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-primary {
+  background-color: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-secondary {
+  background-color: hsl(var(--secondary) / 0.2);
+  color: hsl(var(--secondary-foreground));
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+

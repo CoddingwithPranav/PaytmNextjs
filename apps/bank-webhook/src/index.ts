@@ -7,6 +7,7 @@ app.use(express.json())
 app.post("/hdfcWebhook", async (req:any, res:any) => {
     //TODO: Add zod validation here?ls
     //TODO: HDFC bank should ideally send us a secret so we know this is sent by them
+    //TODO: Check if this onRampTxn is processing or not
     const paymentInformation: {
         token: string;
         userId: string;
@@ -52,4 +53,6 @@ app.post("/hdfcWebhook", async (req:any, res:any) => {
 
 })
 
-app.listen(3003);
+app.listen(3003, ()=>{
+    console.log("Hdfc Server Started at 3003")
+});
