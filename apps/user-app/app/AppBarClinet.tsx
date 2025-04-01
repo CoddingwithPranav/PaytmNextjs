@@ -1,7 +1,7 @@
 "use client"
 import { signIn, signOut, useSession } from "next-auth/react";
-import { AppBar } from "@repo/ui/appBar";
 import { useRouter } from "next/navigation";
+import Header from "../components/Header";
 
 export function AppbarClient() {
   const session = useSession();
@@ -9,7 +9,7 @@ export function AppbarClient() {
 
   return (
    <div>
-      <AppBar onSignin={signIn} onSignout={async () => {
+      <Header onSignin={signIn} onSignout={async () => {
         await signOut()
         router.push("/api/auth/signin")
       }} user={session.data?.user} />

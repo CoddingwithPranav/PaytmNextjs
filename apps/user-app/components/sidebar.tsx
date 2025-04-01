@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import {
   ArrowLeftRight,
@@ -28,6 +28,7 @@ export function Sidebar({ className }: SidebarProps) {
   const [expanded, setExpanded] = useState(true)
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname()
+  const router = useRouter()
 
   const toggleSidebar = () => {
     setExpanded(!expanded)
@@ -108,7 +109,7 @@ export function Sidebar({ className }: SidebarProps) {
           className="fixed inset-0 z-40 bg-background/95 backdrop-blur-sm md:hidden"
         >
           <div className="flex flex-col h-full p-6 pt-16">
-            <div className="flex items-center gap-2 mb-8">
+            <div className="flex items-center gap-2 mb-8 cursor-pointer" onClick={() => router.push('/dashboard')} >
               <div className="bg-primary rounded-full p-1.5">
                 <Sparkles className="h-5 w-5 text-primary-foreground" />
               </div>
@@ -170,7 +171,7 @@ export function Sidebar({ className }: SidebarProps) {
             <div className="bg-primary rounded-full p-1.5 flex-shrink-0">
               <Sparkles className="h-5 w-5 text-primary-foreground" />
             </div>
-            {expanded && <span className="text-xl font-bold">StreamLine</span>}
+            {expanded && <span className="text-xl font-bold cursor-pointer" onClick={() => router.push('/')}>StreamLine</span>}
           </div>
           <Button
             variant="ghost"

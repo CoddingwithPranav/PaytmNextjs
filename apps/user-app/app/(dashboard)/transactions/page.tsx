@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/ui/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/ui/select"
 import { Tabs, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs"
 import { type Transaction, TransactionItem } from "../../../components/transaction-item"
-import { cn } from "../../../components/lib/utils"
+import { cn } from "@repo/ui/utils"
 
 // Sample transactions data
 const allTransactions: Transaction[] = [

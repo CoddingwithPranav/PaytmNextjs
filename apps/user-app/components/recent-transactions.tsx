@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@repo/ui/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
 import { type Transaction, TransactionItem, TransactionItemSkeleton } from "./transaction-item"

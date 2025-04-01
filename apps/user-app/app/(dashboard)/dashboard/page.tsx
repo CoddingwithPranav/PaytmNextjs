@@ -1,4 +1,4 @@
-"use client"
+// "use client"
 import { ArrowLeftRight, ArrowUpRight, CreditCard, DollarSign, Wallet } from "lucide-react"
 import { Transaction } from "../../../components/transaction-item"
 import { ChartTabs } from "../../../components/chart-tabs"
@@ -6,10 +6,27 @@ import { QuickTransfer } from "../../../components/quick-transfer"
 import { RecentTransactions } from "../../../components/recent-transactions"
 import { StatCard } from "../../../components/stat-card"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card"
-import { useState, useEffect } from "react"
-import { Skeleton } from "@repo/ui/components/ui/skeleton"
-import { LoadingCardWithCenteredSpinner, LoadingCard } from "../../../components/loading-card"
+import { getServerSession } from "next-auth"
+import { dbClient } from "@repo/db/client"
+import { authOptions } from "../../lib/auth"
 
+
+async function getBalance() {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user?.id ? Number(session.user.id) : null;
+    if (!userId || isNaN(userId)) {
+        return { amount: 0, locked: 0 }; // or []
+    }
+    const balance = await dbClient.balance.findFirst({
+        where: {
+            userId: Number(session?.user?.id)
+        }
+    });
+    return {
+        amount: balance?.amount || 0,
+        locked: balance?.locked || 0
+    }
+}
 
 // Sample transactions data
 const transactions: Transaction[] = [
@@ -75,54 +92,56 @@ const transactions: Transaction[] = [
   },
 ]
 
-export default function DashboardPage() {
-  const [loading, setLoading] = useState(true)
+export default async function DashboardPage() {
+  // const [loading, setLoading] = useState(true)
+  const balance:{amount:number, locked:number} = await getBalance();
 
-  // Simulate loading state
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false)
-    }, 1500)
+  console.log(balance)
+  // // Simulate loading state
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false)
+  //   }, 1500)
 
-    return () => clearTimeout(timer)
-  }, [])
+  //   return () => clearTimeout(timer)
+  // }, [])
 
-  if (loading) {
-    return (
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+  // if (loading) {
+  //   return (
+  //     <div className="space-y-6">
+  //       <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-24" />
-                  <Skeleton className="h-8 w-32" />
-                  <Skeleton className="h-3 w-20" />
-                </div>
-                <Skeleton className="h-10 w-10 rounded-full" />
-              </div>
-            </Card>
-          ))}
-        </div>
+  //       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+  //         {Array.from({ length: 4 }).map((_, i) => (
+  //           <Card key={i} className="p-6">
+  //             <div className="flex items-start justify-between">
+  //               <div className="space-y-2">
+  //                 <Skeleton className="h-4 w-24" />
+  //                 <Skeleton className="h-8 w-32" />
+  //                 <Skeleton className="h-3 w-20" />
+  //               </div>
+  //               <Skeleton className="h-10 w-10 rounded-full" />
+  //             </div>
+  //           </Card>
+  //         ))}
+  //       </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <LoadingCardWithCenteredSpinner className="md:col-span-3" />
-        </div>
+  //       <div className="grid gap-4 md:grid-cols-3">
+  //         <LoadingCardWithCenteredSpinner className="md:col-span-3" />
+  //       </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <LoadingCard className="md:col-span-1 lg:col-span-2" hasFooter rows={5} />
-          <LoadingCard hasFooter />
-        </div>
+  //       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+  //         <LoadingCard className="md:col-span-1 lg:col-span-2" hasFooter rows={5} />
+  //         <LoadingCard hasFooter />
+  //       </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <LoadingCard rows={3} />
-          <LoadingCard rows={3} />
-        </div>
-      </div>
-    )
-  }
+  //       <div className="grid gap-4 md:grid-cols-2">
+  //         <LoadingCard rows={3} />
+  //         <LoadingCard rows={3} />
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   return (
     <div className="space-y-6">
@@ -131,27 +150,27 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Total Balance"
-          value="$12,560.50"
+          value={(balance.amount + balance.locked)/100}
           description="Across all accounts"
           icon={<Wallet className="h-5 w-5 text-primary" />}
           variant="primary"
           trend={{ value: 12, positive: true }}
         />
         <StatCard
-          title="Income"
-          value="$4,250.00"
-          description="This month"
-          icon={<DollarSign className="h-5 w-5 text-highlight" />}
-          variant="highlight"
-          trend={{ value: 8, positive: true }}
-        />
-        <StatCard
-          title="Expenses"
-          value="$2,150.75"
+          title="Unlocked balance"
+          value={balance.amount/100}
           description="This month"
           icon={<ArrowUpRight className="h-5 w-5 text-destructive" />}
           variant="outline"
           trend={{ value: 3, positive: false }}
+        />
+        <StatCard
+          title="Locked Balance"
+          value={balance.locked/100}
+          description="This month"
+          icon={<DollarSign className="h-5 w-5 text-highlight" />}
+          variant="highlight"
+          trend={{ value: 8, positive: true }}
         />
         <StatCard
           title="Transfers"

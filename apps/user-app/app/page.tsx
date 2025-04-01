@@ -10,6 +10,7 @@ import HeroSection from "../components/HeroSection";
 import LogoSection from "../components/LogoSection";
 import PricingSection from "../components/PricingSection";
 import TestimonialsSection from "../components/TestimonialsSection";
+import { AppbarClient } from "./AppBarClinet";
 
 // export default async function Home() { 
 //   const session = await getServerSession(authOptions);
@@ -24,7 +25,7 @@ import TestimonialsSection from "../components/TestimonialsSection";
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col theme-transition">
-      <Header  />
+      <AppbarClient  />
       <main>
         <HeroSection />
         <LogoSection />

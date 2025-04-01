@@ -1,26 +1,33 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Button } from "@repo/ui/components/ui/button"
-import {
-  Sparkles,
-} from "lucide-react"
-import { useState, useEffect } from "react"
-import { SimpleThemeToggle } from "../components/theme-toggle"
-import MobileNav from "./MobileNav"
+import Link from "next/link";
+import { Button } from "@repo/ui/components/ui/button";
+import { Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { SimpleThemeToggle } from "../components/theme-toggle";
+import MobileNav from "./MobileNav";
+import { useRouter } from "next/navigation";
 
-
-export default  function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
+interface AppbarProps {
+  user?: {
+      name?: string | null;
+  },
+  // TODO: can u figure out what the type should be here?
+  onSignin: ()=>void,
+  onSignout: ()=>void,
+}
+export default function Header({ user, onSignin, onSignout }:AppbarProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
+      setIsScrolled(window.scrollY > 10);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header
@@ -45,8 +52,8 @@ export default  function Header() {
               href={`#${item.toLowerCase()}`}
               className="text-sm font-medium hover:text-primary transition-colors relative group"
             >
-              {item }
-             {/* <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-500 group-hover:w-full"></span> */}
+              {item}
+              {/* <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-500 group-hover:w-full"></span> */}
             </Link>
           ))}
 
@@ -56,11 +63,17 @@ export default  function Header() {
         </nav>
 
         <div className="hidden md:block">
-          <Button className="rounded-full hover-scale">
-            <span className="relative z-10">Get Started</span>
+          <Button className="rounded hover-scale bg-purple-700 text-white"  onClick={user ? onSignout : onSignin}>
+              {user ? "Logout" : "Login"}
           </Button>
+          {
+            user && <Button className="rounded hover-scale bg-white text-purple-700 border-2 ml-2"  onClick={() => router.push('/dashboard')}  >
+            Dashboard
+           </Button>
+          }
+          
         </div>
       </div>
     </header>
-  )
+  );
 }

@@ -24,7 +24,7 @@ export default function Header({ title }: HeaderProps) {
   const [searchOpen, setSearchOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white px-4 md:px-6">
       <div className="hidden md:block text-xl font-semibold">{title}</div>
 
       <div className={`flex-1 ${searchOpen ? "flex" : "hidden md:flex"}`}>
