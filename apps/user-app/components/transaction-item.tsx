@@ -21,7 +21,7 @@ export interface Transaction {
   amount: number
   currency: string
   description: string
-  date: Date
+  date: any
   recipient?: string
   sender?: string
   status?: "completed" | "pending" | "failed"
