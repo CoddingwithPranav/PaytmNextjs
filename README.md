@@ -1,93 +1,197 @@
-# Turborepo starter
+# 💸 Paytem – P2P Payment App (Paytm Clone)
 
-This Turborepo starter is maintained by the Turborepo core team.
+A **modern, secure, monorepo-based P2P payment app** built with **Next.js**, **Prisma**, **Express**, and **TailwindCSS**.  
+Supports **on-ramp**, **P2P transfers**, and **bank webhooks**, providing a full Paytm-like experience.
 
-## Using this example
+---
 
-Run the following command:
+## 🚀 Features
 
-```sh
-npx create-turbo@latest
+- 🔁 **P2P Transfers** – Instantly send money via phone number  
+- 💰 **On-Ramp (Add Money)** – Bank integration via webhook  
+- ⚡ **Real-time Balance Updates**  
+- 📱 **Responsive UI** – Mobile-first, Paytm-inspired interface  
+- 🔐 **Secure Webhooks** – HDFC-style bank callbacks  
+- 🧩 **TypeScript + Turborepo** – Scalable monorepo architecture  
+
+---
+
+## 🧠 Tech Stack
+
+| Layer | Technologies |
+|:------|:-------------|
+| **Frontend** | Next.js 15, React 19, TailwindCSS, Lucide Icons |
+| **Backend** | Express, Prisma ORM |
+| **Database** | PostgreSQL |
+| **Build System** | Turborepo, esbuild |
+| **Authentication** | NextAuth.js |
+| **State Management** | Jotai |
+
+---
+
+## 🗂️ Project Structure
+
+```bash
+paytem/
+├── apps/
+│   └── user-app/          # Next.js frontend
+│   └── bank-webhook/          # Next.js frontend
+├── packages/
+│   ├── db/                # Prisma schema + client
+│   ├── ui/                # Shared UI components
+│   └── store/             # Global state (Jotai)
+├── bank-webhook/          # Express webhook server
+└── package.json
+````
+
+---
+
+## ⚙️ Prerequisites
+
+* **Node.js** ≥ 18
+* **PostgreSQL** (local or Docker)
+* **npm** ≥ 10.9.2
+
+---
+
+## 🧩 Setup & Run
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/CoddingwithPranav/PaytmNextjs.git
+cd paytem
+npm install
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
- docker run -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
+### 2. Setup PostgreSQL
 
-### Apps and Packages
+#### 🐳 Option A: Docker (Recommended)
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```bash
+docker run --name postgres-paytem \
+  -e POSTGRES_PASSWORD=yourpassword \
+  -e POSTGRES_DB=paytem \
+  -p 5432:5432 \
+  -d postgres
 ```
 
-### Develop
+#### 💻 Option B: Local Installation
 
-To develop all apps and packages, run the following command:
+Install PostgreSQL and create a database named `paytem`.
 
-```
-cd my-turborepo
-pnpm dev
-```
+---
 
-### Remote Caching
+### 3. Configure Environment Variables
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```bash
+cp .env.example .env
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+Edit `.env` with your credentials:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+```env
+DATABASE_URL="postgresql://postgres:yourpassword@localhost:5432/paytem"
+NEXTAUTH_SECRET="your-secret-here"
+NEXTAUTH_URL="http://localhost:3000"
+```
+
+---
+
+### 4. Run Database Migrations
+
+```bash
+npm run db:generate
+npm run db:migrate
+```
+
+---
+
+### 5. Start Services
+
+Run each service in a separate terminal:
+
+**Frontend (Next.js)**
+
+```bash
+npm run dev
+# → http://localhost:3000
+```
+
+**Bank Webhook (Express)**
+
+```bash
+cd bank-webhook
+npm run dev
+# → http://localhost:3003/hdfcWebhook
+```
+
+---
+
+## 🧰 Scripts
+
+| Command                  | Description                            |
+| :----------------------- | :------------------------------------- |
+| `npm run dev`            | Start all apps in dev mode (Turborepo) |
+| `npm run build`          | Build all apps                         |
+| `npm run db:generate`    | Generate Prisma client                 |
+| `npm run db:migrate`     | Run Prisma migrations                  |
+| `npm run start-user-app` | Start production frontend              |
+
+---
+
+## 🪝 Webhook Flow (On-Ramp)
+
+1. User initiates **Add Money** → triggers `createOnRampTransaction`
+2. Redirects to **bank simulation page**
+3. Bank calls → `POST /hdfcWebhook`
+4. Webhook updates:
+
+   * User `balance` → incremented
+   * `onRampTransaction.status` → `"Success"`
+
+Example payload:
+
+```json
+{
+  "token": "abc123",
+  "user_identifier": "1",
+  "amount": "50000"  
+}
+```
+
+---
+
+
+## 🌿 Environment Variables
+
+```env
+DATABASE_URL=postgresql://...
+NEXTAUTH_SECRET=...
+NEXTAUTH_URL=http://localhost:3000
+```
+
+---
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. Create a new branch → `feat/xxx` or `fix/xxx`
+3. Run `npm run format` before committing
+4. **Submit a PR** 🎉
+
+---
+
+## 📜 License
+
+**MIT License**
+Free to use, modify, and distribute.
+
+---
+
+> 💙 *Made with TypeScript and passion by [Your Name]*
+> *“Secure. Simple. Seamless Payments.”*
 
 ```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
-# PaytmNextjs
-
-
-
-- copy all .env.example to .env
-go to packages/db
- -npx prisma migrate
- -npx prisma db seed
