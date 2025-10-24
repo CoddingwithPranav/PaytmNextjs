@@ -9,7 +9,8 @@
     "check-types": "turbo run check-types",
     "db:generate":"cd packages/db && npx prisma generate && cd ../..",
     "db:migrate":"cd packages/db && npx prisma migrate dev && cd ../..",
-    "start-user-app": "cd ./apps/user-app && npm run start"
+    "start-user-app": "cd ./apps/user-app && npm run start",
+    "postinstall": "npm run db:generate"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
