@@ -18,7 +18,7 @@ async function getOnRampTransactions():Promise<any> {
   return txns.map((t:any) => ({
       id:new Date(),
       type:"dummy",
-      category:"testCategory",
+      category:"shopping",
       date: t.startTime,
       amount: t.amount,
       currency:"RS",

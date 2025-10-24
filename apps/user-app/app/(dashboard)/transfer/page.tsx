@@ -42,42 +42,6 @@ export default async function TransferPage() {
 
       {/* Tabs */}
       <Tabs defaultValue="transfer" className="w-full">
-        {/* Mobile: Vertical Tabs */}
-        <div className="block md:hidden">
-          <TabsList className="flex flex-col w-full rounded-xl bg-muted/50 p-1 gap-1">
-            <TabsTrigger
-              value="transfer"
-              className="w-full rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-            >
-              Send Now
-            </TabsTrigger>
-            <TabsTrigger
-              value="history"
-              className="w-full rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-            >
-              History
-            </TabsTrigger>
-          </TabsList>
-        </div>
-
-        {/* Desktop: Horizontal Tabs */}
-        <div className="hidden md:block">
-          <TabsList className="inline-flex w-auto rounded-full bg-muted/50 p-1">
-            <TabsTrigger
-              value="transfer"
-              className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-6"
-            >
-              Send Now
-            </TabsTrigger>
-            <TabsTrigger
-              value="history"
-              className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-6"
-            >
-              History
-            </TabsTrigger>
-          </TabsList>
-        </div>
-
         {/* Content */}
         <div className="mt-6">
           <TabsContent value="transfer" className="mt-0">

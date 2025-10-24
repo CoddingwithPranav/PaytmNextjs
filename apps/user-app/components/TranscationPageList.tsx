@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@repo/ui/components/ui/card";
 import { Input } from "@repo/ui/components/ui/input";
-import { Tabs, TabsList, TabsTrigger } from "@repo/ui/components/ui/tabs";
+import { Tabs } from "@repo/ui/components/ui/tabs";
 import { Transaction, TransactionItem } from "./transaction-item";
 import { Search } from "lucide-react";
 
@@ -58,13 +58,6 @@ export function TransactionsPageList({
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="income">Income</TabsTrigger>
-              <TabsTrigger value="expense">Expenses</TabsTrigger>
-              <TabsTrigger value="transfer">Transfers</TabsTrigger>
-            </TabsList>
-
             <div className="mt-4 space-y-1 divide-y">
               {filteredTransactions.length > 0 ? (
                 filteredTransactions.map((transaction) => (
