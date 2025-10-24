@@ -1,98 +1,119 @@
-"use client"
-import Link from "next/link"
-import Image from "next/image"
+"use client";
+
+import Link from "next/link";
 import {
   Sparkles,
   ArrowUpRight,
-} from "lucide-react"
-import {  useRef } from "react"
-import {  useInView } from "framer-motion"
+  Send,
+  Wallet,
+  Shield,
+  Zap,
+  Users,
+  Lock,
+} from "lucide-react";
+import { useRef } from "react";
+import { useInView, motion } from "framer-motion";
+
 export default function FeaturesSection() {
-    const features = [
-      {
-        title: "Seamless Integration",
-        description: "Connect with your favorite tools and services without any hassle.",
-        icon: (
-          <div className="p-2 bg-secondary rounded-full">
-            <Image src="/placeholder.svg?height=48&width=48" width={48} height={48} alt="Integration icon" />
+  const features = [
+    {
+      title: "Instant UPI Transfers",
+      description: "Send money to any UPI ID or mobile number in seconds. Zero waiting.",
+      icon: <Send className="h-6 w-6 text-primary" />,
+    },
+    {
+      title: "Paytm Wallet",
+      description: "Add money once, pay anywhere — bills, shops, online. Fast & secure.",
+      icon: <Wallet className="h-6 w-6 text-accent" />,
+    },
+    {
+      title: "100% Secure",
+      description: "Bank-level encryption, PCI DSS compliant. Your money is always safe.",
+      icon: <Shield className="h-6 w-6 text-primary" />,
+    },
+    {
+      title: "Cashback & Rewards",
+      description: "Earn cashback on every transaction. More you pay, more you save.",
+      icon: <Zap className="h-6 w-6 text-accent" />,
+    },
+  ];
+
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+  return (
+    <section
+      id="features"
+      className="relative flex justify-center w-full py-12 md:py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-background via-background to-muted/30"
+    >
+      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+
+      <div className="container px-4 md:px-6 lg:px-8" ref={ref}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center text-center space-y-4 mb-12"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs font-semibold text-primary ring-1 ring-primary/20 hover-scale">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Why Millions Trust Paytm</span>
           </div>
-        ),
-      },
-      {
-        title: "Real-time Collaboration",
-        description: "Work together with your team in real-time, no matter where they are.",
-        icon: (
-          <div className="p-2 bg-secondary rounded-full">
-            <Image src="/placeholder.svg?height=48&width=48" width={48} height={48} alt="Collaboration icon" />
-          </div>
-        ),
-      },
-      {
-        title: "Advanced Analytics",
-        description: "Gain valuable insights with our powerful analytics dashboard.",
-        icon: (
-          <div className="p-2 bg-secondary rounded-full">
-            <Image src="/placeholder.svg?height=48&width=48" width={48} height={48} alt="Analytics icon" />
-          </div>
-        ),
-      },
-      {
-        title: "Enterprise Security",
-        description: "Rest easy knowing your data is protected with enterprise-grade security.",
-        icon: (
-          <div className="p-2 bg-secondary rounded-full">
-            <Image src="/placeholder.svg?height=48&width=48" width={48} height={48} alt="Security icon" />
-          </div>
-        ),
-      },
-    ]
-  
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, amount: 0.2 })
-  
-    return (
-      <section
-        id="features"
-        className="w-full py-12 md:py-24 lg:py-32 bg-secondary/30 dark:bg-secondary/10 relative overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-grid-white/5 [mask-image:radial-gradient(white,transparent_70%)]"></div>
-  
-        <div className="container px-4 md:px-6 relative" ref={ref}>
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 w-fit gap-1 hover-scale">
-              <Sparkles className="h-3 w-3" />
-              <span>Powerful Features</span>
-            </div>
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl gradient-text animate-gradient dark:text-transparent">
-                Everything You Need
-              </h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed reduced-contrast">
-                Everything you need to manage your workflow efficiently and boost productivity.
-              </p>
-            </div>
-          </div>
-          <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 md:grid-cols-2 md:gap-12">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center space-y-4 rounded-lg border bg-background/80 dark:bg-card/80 backdrop-blur-sm p-6 shadow-sm hover-lift"
-              >
-                <div className="p-2 rounded-full hover:scale-110 transition-transform duration-300">{feature.icon}</div>
-                <h3 className="text-xl font-bold">{feature.title}</h3>
-                <p className="text-muted-foreground text-center reduced-contrast">{feature.description}</p>
-                <div className="transition-all duration-300">
-                  <Link
-                    href="#"
-                    className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                  >
-                    Learn more <ArrowUpRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </div>
+
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+            <span className="text-primary">Pay</span>
+            <span className="text-foreground">tm</span> Does It All
+          </h2>
+
+          <p className="max-w-2xl text-lg text-muted-foreground md:text-xl">
+            From instant payments to rewards — everything you need in one app.
+          </p>
+        </motion.div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto">
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group-features group relative flex flex-col items-center p-6 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover-lift transition-all duration-300"
+            >
+              <div className="mb-4 p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                {feature.icon}
               </div>
-            ))}
-          </div>
+
+              <h3 className="text-lg font-bold text-foreground mb-2">{feature.title}</h3>
+              <p className="text-sm text-muted-foreground text-center leading-relaxed">
+                {feature.description}
+              </p>
+
+              <Link
+                href="#"
+                className="mt-4 inline-flex items-center text-xs font-medium text-primary hover:text-primary/80 transition-colors opacity-0 group-hover:opacity-100"
+              >
+                Learn more <ArrowUpRight className="ml-1 h-3 w-3" />
+              </Link>
+            </motion.div>
+          ))}
         </div>
-      </section>
-    )
-  }
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.5 }}
+          className="mt-16 text-center"
+        >
+          <div className="inline-flex items-center gap-3 text-sm text-muted-foreground">
+            <Users className="h-5 w-5 text-accent" />
+            <span>Used by</span>
+            <span className="font-bold text-foreground">250M+</span>
+            <span>Indians daily</span>
+            <Lock className="h-5 w-5 text-primary" />
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}

@@ -1,103 +1,128 @@
-"use client"
-import Image from "next/image"
-import {
-  Sparkles,
-} from "lucide-react"
-import { useRef } from "react"
-import { useInView } from "framer-motion"
+"use client";
+
+import { Sparkles, Star } from "lucide-react";
+import { useRef } from "react";
+import { useInView, motion } from "framer-motion";
+import Image from "next/image";
+
 export default function TestimonialsSection() {
-    const testimonials = [
-      {
-        quote:
-          "StreamLine has completely transformed how our team works together. The real-time collaboration features are game-changing.",
-        author: "Sarah Johnson",
-        role: "Product Manager at TechCorp",
-        avatar: "/placeholder.svg?height=64&width=64",
-      },
-      {
-        quote:
-          "The analytics dashboard gives us insights we never had before. We've been able to optimize our workflow and increase productivity by 30%.",
-        author: "Michael Chen",
-        role: "CTO at StartupX",
-        avatar: "/placeholder.svg?height=64&width=64",
-      },
-      {
-        quote:
-          "Enterprise-grade security without enterprise-grade complexity. StreamLine makes it easy to keep our data safe.",
-        author: "Emily Rodriguez",
-        role: "Security Lead at SecureCo",
-        avatar: "/placeholder.svg?height=64&width=64",
-      },
-    ]
-  
-    const ref = useRef(null)
-    const isInView = useInView(ref, { once: true, amount: 0.2 })
-  
-    return (
-      <section
-        id="testimonials"
-        className="w-full py-12 md:py-24 lg:py-32 gradient-bg dark:bg-gradient-to-b dark:from-gray-950 dark:to-gray-900"
-      >
-        <div className="container px-4 md:px-6" ref={ref}>
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80 w-fit gap-1 hover-scale">
-              <Sparkles className="h-3 w-3" />
-              <span>Testimonials</span>
-            </div>
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl gradient-text animate-gradient dark:text-transparent">
-                What Our Customers Say
-              </h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed reduced-contrast">
-                Don't just take our word for it. Here's what our customers have to say about StreamLine.
-              </p>
-            </div>
+  const testimonials = [
+    {
+      quote:
+        "Paytm made sending money to my family so easy. Just one tap and it’s done!",
+      author: "Priya Sharma",
+      role: "Homemaker, Mumbai",
+      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+    },
+    {
+      quote:
+        "I use Paytm for all my shop payments. Cashback on every transaction — love it!",
+      author: "Rajesh Kumar",
+      role: "Shop Owner, Delhi",
+      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+    },
+    {
+      quote:
+        "UPI transfers are instant. No more waiting for NEFT. Paytm is a lifesaver.",
+      author: "Ananya Patel",
+      role: "Freelancer, Bangalore",
+      avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+    },
+  ];
+
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
+  return (
+    <section
+      id="testimonials"
+      className="relative flex justify-center w-full py-12 md:py-20 lg:py-28 overflow-hidden bg-gradient-to-b from-background via-background to-muted/20"
+    >
+      <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+
+      <div className="container px-4 md:px-6 lg:px-8" ref={ref}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="text-center space-y-4 mb-12"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-xs font-semibold text-primary ring-1 ring-primary/20 hover-scale mx-auto">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Trusted by Millions</span>
           </div>
-          <div className="mx-auto grid max-w-5xl gap-6 py-12 lg:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="flex flex-col justify-between space-y-4 rounded-xl border bg-background/80 dark:bg-card/80 backdrop-blur-sm p-6 shadow-sm hover-lift"
-              >
-                <div className="space-y-4">
-                  <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="h-5 w-5 text-primary"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground italic reduced-contrast">"{testimonial.quote}"</p>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="transition-transform hover:scale-110 duration-300">
-                    <Image
-                      src={testimonial.avatar || "/placeholder.svg"}
-                      alt={testimonial.author}
-                      width={64}
-                      height={64}
-                      className="rounded-full border-2 border-primary/20"
+
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+            <span className="text-primary">Pay</span>
+            <span className="text-foreground">tm</span> in Real Life
+          </h2>
+
+          <p className="max-w-2xl mx-auto text-lg text-muted-foreground md:text-xl">
+            See why over 250 million Indians choose Paytm every day.
+          </p>
+        </motion.div>
+
+        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
+          {testimonials.map((t, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.15 }}
+              className="group relative flex flex-col justify-between p-6 rounded-2xl bg-card/90 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover-lift transition-all duration-300"
+            >
+              <div className="space-y-4">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, s) => (
+                    <Star
+                      key={s}
+                      className="h-4 w-4 fill-primary text-primary"
                     />
+                  ))}
+                </div>
+                <p className="italic text-muted-foreground leading-relaxed">
+                  "{t.quote}"
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4 mt-6">
+                <div className="relative">
+                  <Image
+                    src={t.avatar  || "/placeholder.svg"}
+                    alt={t.author}
+                    width={56}
+                    height={56}
+                    className="rounded-full border-2 border-primary/20 group-hover:border-primary/40 transition-colors"
+                  />
+                  <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-accent flex items-center justify-center">
+                    <span className="text-[10px] font-bold text-white">✓</span>
                   </div>
-                  <div>
-                    <h3 className="font-bold">{testimonial.author}</h3>
-                    <p className="text-sm text-muted-foreground reduced-contrast">{testimonial.role}</p>
-                  </div>
+                </div>
+                <div>
+                  <h3 className="font-bold text-foreground">{t.author}</h3>
+                  <p className="text-sm text-muted-foreground">{t.role}</p>
                 </div>
               </div>
-            ))}
-          </div>
+            </motion.div>
+          ))}
         </div>
-      </section>
-    )
-  }
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.6 }}
+          className="mt-12 text-center"
+        >
+          <p className="text-sm text-muted-foreground">
+            <span className="font-bold text-foreground">250M+</span> happy users •{" "}
+            <span className="font-bold text-primary">4.8</span> average rating
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+  
+

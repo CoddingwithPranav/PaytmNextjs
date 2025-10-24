@@ -8,23 +8,22 @@ import { SimpleThemeToggle } from "../components/theme-toggle";
 import MobileNav from "./MobileNav";
 import { useRouter } from "next/navigation";
 
-interface AppbarProps {
+interface AppBarProps {
   user?: {
-      name?: string | null;
-  },
-  // TODO: can u figure out what the type should be here?
-  onSignin: ()=>void,
-  onSignout: ()=>void,
+    name?: string | null;
+  };
+  onSignin: () => void;
+  onSignout: () => void;
 }
-export default function Header({ user, onSignin, onSignout }:AppbarProps) {
+
+export default function Header({ user, onSignin, onSignout }: AppBarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -32,28 +31,28 @@ export default function Header({ user, onSignin, onSignout }:AppbarProps) {
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled ? "navbar-bg shadow-sm" : "navbar-transparent"
+        isScrolled ? "bg-background/95 backdrop-blur-sm shadow-sm" : "bg-transparent"
       }`}
     >
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2 hover-scale">
-          <div className="bg-primary rounded-full p-1.5">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="bg-primary rounded-full p-1.5 group-hover:scale-110 transition-transform">
             <Sparkles className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold">StreamLine</span>
-        </div>
+          <span className="text-xl font-bold text-primary">Paytm</span>
+        </Link>
 
         <MobileNav />
 
-        <nav className="hidden md:flex gap-6 items-center">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {["Features", "Testimonials", "Pricing", "Contact"].map((item) => (
             <Link
               key={item}
               href={`#${item.toLowerCase()}`}
-              className="text-sm font-medium hover:text-primary transition-colors relative group"
+              className="text-sm font-medium text-foreground hover:text-primary transition-colors relative group"
             >
               {item}
-              {/* <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-500 group-hover:w-full"></span> */}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
 
@@ -62,16 +61,22 @@ export default function Header({ user, onSignin, onSignout }:AppbarProps) {
           </div>
         </nav>
 
-        <div className="hidden md:block">
-          <Button className="rounded hover-scale bg-purple-700 text-white"  onClick={user ? onSignout : onSignin}>
-              {user ? "Logout" : "Login"}
+        <div className="hidden md:flex items-center gap-3">
+          <Button
+            onClick={user ? onSignout : onSignin}
+            className="rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 hover-scale transition-all"
+          >
+            {user ? "Logout" : "Login"}
           </Button>
-          {
-            user && <Button className="rounded hover-scale bg-white text-purple-700 border-2 ml-2"  onClick={() => router.push('/dashboard')}  >
-            Dashboard
-           </Button>
-          }
-          
+
+          {user && (
+            <Button
+              onClick={() => router.push("/dashboard")}
+              className="rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 hover-scale transition-all"
+            >
+              Dashboard
+            </Button>
+          )}
         </div>
       </div>
     </header>

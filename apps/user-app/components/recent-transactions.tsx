@@ -44,7 +44,7 @@ export function RecentTransactions({ transactions, limit = 5, loading = false }:
       </CardContent>
       <CardFooter>
         <Button asChild variant="outline" className="w-full rounded-full hover-scale">
-          <Link href="/dashboard/transactions">View All Transactions</Link>
+          <Link href="/transactions">View All Transactions</Link>
         </Button>
       </CardFooter>
     </Card>

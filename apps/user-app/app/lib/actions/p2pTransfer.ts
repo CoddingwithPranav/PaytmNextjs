@@ -4,7 +4,10 @@ import { authOptions } from "../auth";
 import { dbClient } from "@repo/db/client";
 
 export async function p2pTransfer(to: string, amount: number) {
-    const session = await getServerSession(authOptions);
+   try {
+    
+     const session = await getServerSession(authOptions);
+    console.log("P2P Transfer initiated by user:", session?.user?.id, "to:", to, "amount:", amount);
     const from = session?.user?.id;
     if (!from) {
         return {
@@ -22,7 +25,7 @@ export async function p2pTransfer(to: string, amount: number) {
             message: "User not found"
         }
     }
-    await dbClient.$transaction(async (tx) => {
+    const res =  await dbClient.$transaction(async (tx) => {
         await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(from)} FOR UPDATE`;
         const fromBalance = await tx.balance.findUnique({
             where: { userId: Number(from) },
@@ -42,4 +45,8 @@ export async function p2pTransfer(to: string, amount: number) {
           });
           
     });
+    console.log("P2P Transfer successful:", res);
+   } catch (error) {
+    console.error("Error during P2P Transfer:", error);
+   }
 }

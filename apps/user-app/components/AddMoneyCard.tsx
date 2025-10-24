@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { p2pTransfer } from "../app/lib/actions/p2pTransfer";
 import {
+  Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
   CardFooter,
-  Card,
 } from "@repo/ui/components/ui/card";
 import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
@@ -20,129 +19,74 @@ import {
   SelectItem,
 } from "@repo/ui/components/ui/select";
 import { Textarea } from "@repo/ui/components/ui/textarea";
-import { Building, Landmark, CreditCard, ArrowRight } from "lucide-react";
+import { Building, Landmark, CreditCard } from "lucide-react";
 import { Button } from "@repo/ui/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/ui/radio-group";
 import { createOnRampTransaction } from "../app/lib/actions/createOnrampTransaction";
 
 const SUPPORTED_BANKS = [
-  {
-    name: "HDFC Bank",
-    redirectUrl: "https://netbanking.hdfcbank.com",
-  },
-  {
-    name: "Axis Bank",
-    redirectUrl: "https://www.axisbank.com/",
-  },
+  { name: "HDFC Bank", redirectUrl: "https://netbanking.hdfcbank.com" },
+  { name: "Axis Bank", redirectUrl: "https://www.axisbank.com/" },
 ];
+
 export function AddMoney() {
   const [amount, setAmount] = useState("");
   const [transferType, setTransferType] = useState("own");
   const [number, setNumber] = useState("");
-  const [redirectUrl, setRedirectUrl] = useState(
-    SUPPORTED_BANKS[0]?.redirectUrl
-  );
+  const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Transfer Details</CardTitle>
-        <CardDescription>Choose where you want to send money</CardDescription>
+    <Card className="rounded-2xl border-0 shadow-lg overflow-hidden">
+      {/* Header */}
+      <CardHeader className="bg-gradient-to-br from-primary/5 to-accent/5 pb-6">
+        <CardTitle className="text-xl font-semibold text-foreground">Transfer Details</CardTitle>
+        <CardDescription className="text-sm text-muted-foreground">
+          Choose where you want to send money
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <RadioGroup
-          defaultValue="own"
-          value={transferType}
-          onValueChange={setTransferType}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4"
-        >
-          <div
-            className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-              transferType === "own"
-                ? "border-primary bg-primary/5"
-                : "hover:bg-muted/50"
-            }`}
-          >
-            <RadioGroupItem value="own" id="own" className="sr-only" />
-            <Label
-              htmlFor="own"
-              className="flex flex-col items-center gap-2 cursor-pointer"
-            >
-              <Building className="h-8 w-8 text-primary" />
-              <span className="font-medium">Own Accounts</span>
-              <span className="text-xs text-muted-foreground text-center">
-                Transfer between your accounts
-              </span>
-            </Label>
-          </div>
 
-          <div
-            className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-              transferType === "domestic"
-                ? "border-primary bg-primary/5"
-                : "hover:bg-muted/50"
-            }`}
-          >
-            <RadioGroupItem
-              value="domestic"
-              id="domestic"
-              className="sr-only"
-            />
-            <Label
-              htmlFor="domestic"
-              className="flex flex-col items-center gap-2 cursor-pointer"
+      <CardContent className="space-y-6 pt-6">
+        {/* Transfer Type */}
+        <RadioGroup value={transferType} onValueChange={setTransferType} className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            { value: "own", icon: Building, title: "Own Accounts", desc: "Transfer between your accounts" },
+            { value: "domestic", icon: Landmark, title: "Domestic Transfer", desc: "Send to other banks within the country" },
+            { value: "international", icon: CreditCard, title: "International", desc: "Send money abroad" },
+          ].map(({ value, icon: Icon, title, desc }) => (
+            <label
+              key={value}
+              className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                transferType === value
+                  ? "border-primary bg-primary/5 shadow-sm"
+                  : "border-border hover:bg-muted/50"
+              }`}
             >
-              <Landmark className="h-8 w-8 text-primary" />
-              <span className="font-medium">Domestic Transfer</span>
-              <span className="text-xs text-muted-foreground text-center">
-                Send to other banks within the country
-              </span>
-            </Label>
-          </div>
-
-          <div
-            className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-              transferType === "international"
-                ? "border-primary bg-primary/5"
-                : "hover:bg-muted/50"
-            }`}
-          >
-            <RadioGroupItem
-              value="international"
-              id="international"
-              className="sr-only"
-            />
-            <Label
-              htmlFor="international"
-              className="flex flex-col items-center gap-2 cursor-pointer"
-            >
-              <CreditCard className="h-8 w-8 text-primary" />
-              <span className="font-medium">International</span>
-              <span className="text-xs text-muted-foreground text-center">
-                Send money abroad
-              </span>
-            </Label>
-          </div>
+              <RadioGroupItem value={value} className="sr-only" />
+              <Icon className="h-7 w-7 text-primary" />
+              <span className="font-medium text-sm">{title}</span>
+              <span className="text-xs text-muted-foreground text-center">{desc}</span>
+            </label>
+          ))}
         </RadioGroup>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        {/* Form Grid */}
+        <div className="grid gap-5 sm:grid-cols-2">
+          {/* From Account */}
           <div className="space-y-2">
             <Label htmlFor="from-account">From Account</Label>
             <Select
-              defaultValue="checking"
+              value={provider}
               onValueChange={(value) => {
-                setRedirectUrl(
-                  SUPPORTED_BANKS.find((x) => x.name === value)?.redirectUrl ||
-                    ""
-                );
-                setProvider(
-                  SUPPORTED_BANKS.find((x) => x.name === value)?.name || ""
-                );
+                const bank = SUPPORTED_BANKS.find((x) => x.name === value);
+                if (bank) {
+                  setProvider(bank.name);
+                  setRedirectUrl(bank.redirectUrl);
+                }
               }}
             >
-              <SelectTrigger id="from-account">
-                <SelectValue placeholder="Select account" />
+              <SelectTrigger id="from-account" className="rounded-xl h-12">
+                <SelectValue placeholder="Select bank" />
               </SelectTrigger>
               <SelectContent>
                 {SUPPORTED_BANKS.map((x) => (
@@ -154,107 +98,105 @@ export function AddMoney() {
             </Select>
           </div>
 
+          {/* To Account / Recipient */}
           <div className="space-y-2">
             <Label htmlFor="to-account">
               {transferType === "own"
                 ? "To Account"
                 : transferType === "domestic"
-                  ? "Recipient Account"
-                  : "Recipient Details"}
+                ? "Recipient Account"
+                : "Recipient Details"}
             </Label>
 
             {transferType === "own" ? (
-            <Select
-            defaultValue="checking"
-            onValueChange={(value) => {
-              setRedirectUrl(
-                SUPPORTED_BANKS.find((x) => x.name === value)?.redirectUrl ||
-                  ""
-              );
-              setProvider(
-                SUPPORTED_BANKS.find((x) => x.name === value)?.name || ""
-              );
-            }}
-          >
-            <SelectTrigger id="from-account">
-              <SelectValue placeholder="Select account" />
-            </SelectTrigger>
-            <SelectContent>
-              {SUPPORTED_BANKS.map((x) => (
-                <SelectItem key={x.name} value={x.name}>
-                  {x.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+              <Select
+                defaultValue="checking"
+                onValueChange={(value) => {
+                  const bank = SUPPORTED_BANKS.find((x) => x.name === value);
+                  if (bank) {
+                    setRedirectUrl(bank.redirectUrl);
+                    setProvider(bank.name);
+                  }
+                }}
+              >
+                <SelectTrigger id="to-account" className="rounded-xl h-12">
+                  <SelectValue placeholder="Select account" />
+                </SelectTrigger>
+                <SelectContent>
+                  {SUPPORTED_BANKS.map((x) => (
+                    <SelectItem key={x.name} value={x.name}>
+                      {x.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             ) : transferType === "domestic" ? (
-              <div className="space-y-4">
-                <Input
-                  id="account-number"
-                  placeholder="Account Number"
-                  type="text"
-                  maxLength={10}
-                  onChange={(event) => {
-                    setNumber(event.target.value);
-                  }}
-                />
-                {/* <Input id="routing-number" placeholder="Routing Number" /> */}
-              </div>
+              <Input
+                id="account-number"
+                placeholder="Account Number"
+                type="text"
+                maxLength={10}
+                className="rounded-xl h-12"
+                onChange={(e) => setNumber(e.target.value)}
+              />
             ) : (
-              <div className="space-y-4">
-                <Input id="swift-code" placeholder="SWIFT/BIC Code" />
-                <Input id="iban" placeholder="IBAN" />
+              <div className="space-y-3">
+                <Input id="swift-code" placeholder="SWIFT/BIC Code" className="rounded-xl h-12" />
+                <Input id="iban" placeholder="IBAN" className="rounded-xl h-12" />
               </div>
             )}
           </div>
 
-          {(transferType === "domestic" ||
-            transferType === "international") && (
-            <div className="space-y-2 md:col-span-2">
+          {/* Recipient Name (Conditional) */}
+          {(transferType === "domestic" || transferType === "international") && (
+            <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="recipient-name">Recipient Name</Label>
-              <Input id="recipient-name" placeholder="Full Name" />
+              <Input id="recipient-name" placeholder="Full Name" className="rounded-xl h-12" />
             </div>
           )}
 
-          <div className="space-y-2 md:col-span-2">
+          {/* Amount */}
+          <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="amount">Amount</Label>
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <span className="text-muted-foreground">$</span>
-              </div>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-lg font-medium text-foreground">₹</span>
               <Input
                 id="amount"
                 type="number"
-                placeholder="0.00"
-                className="pl-8"
+                placeholder="0"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
+                className="pl-9 pr-3 rounded-xl h-12 text-lg font-medium"
               />
             </div>
           </div>
 
-          <div className="space-y-2 md:col-span-2">
+          {/* Description */}
+          <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="description">Description (Optional)</Label>
             <Textarea
               id="description"
               placeholder="Add a note about this transfer"
+              className="rounded-xl min-h-24 resize-none"
             />
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex flex-col space-y-2">
+
+      {/* Footer */}
+      <CardFooter className="flex flex-col gap-3 pt-4 bg-muted/30">
         <Button
-          className="w-96 rounded-full hover-scale group bg-purple-700 text-white relative overflow-hidden"
+          className="w-full bg-primary max-w-md mx-auto rounded-full h-12 text-base font-semibold hover:from-primary/90 hover:to-accent/90 text-white shadow-md transition-all hover:shadow-lg"
+          disabled={!amount || !provider}
           onClick={async () => {
-            console.log(provider,amount)
-            await createOnRampTransaction(provider, amount);
+            await createOnRampTransaction(provider,(Number(amount) * 100).toString() );
             window.location.href = redirectUrl || "";
           }}
         >
           Add Money
         </Button>
         <p className="text-xs text-muted-foreground text-center">
-          Transfers typically complete within 1-2 business days
+          Transfers typically complete within 1–2 business days
         </p>
       </CardFooter>
     </Card>

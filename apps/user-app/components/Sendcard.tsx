@@ -25,26 +25,6 @@ export function SendCard() {
             <CardDescription>Enter the amount and details for your transfer</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* {selectedContactDetails ? (
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                <Image
-                  src={selectedContactDetails.avatar || "/placeholder.svg"}
-                  alt={selectedContactDetails.name}
-                  width={48}
-                  height={48}
-                  className="rounded-full"
-                />
-                <div>
-                  <div className="font-medium">{selectedContactDetails.name}</div>
-                  <div className="text-sm text-muted-foreground">{selectedContactDetails.email}</div>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center justify-center gap-2 p-6 border-2 border-dashed rounded-lg text-muted-foreground">
-                <User className="h-5 w-5" />
-                <span>Select a recipient from the list</span>
-              </div>
-            )} */}
              <div className="space-y-2">
               <Label htmlFor="amount">Number</Label>
               <div className="relative">
@@ -88,44 +68,6 @@ export function SendCard() {
                 // value={note}
                 // onChange={(e) => setNote(e.target.value)}
               />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Transfer Method</Label>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="border rounded-lg p-3 cursor-pointer hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-highlight/20 mx-auto mb-2">
-                    <svg className="h-5 w-5 text-highlight" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 10V3L4 14h7v7l9-11h-7z"
-                      />
-                    </svg>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-medium">Instant</div>
-                    <div className="text-xs text-muted-foreground">1.5% fee</div>
-                  </div>
-                </div>
-                <div className="border rounded-lg p-3 cursor-pointer hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primary/20 mx-auto mb-2">
-                    <svg className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <div className="text-center">
-                    <div className="font-medium">Standard</div>
-                    <div className="text-xs text-muted-foreground">1-2 days, free</div>
-                  </div>
-                </div>
-              </div>
             </div>
           </CardContent>
           <CardFooter>
